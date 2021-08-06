@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.out_color {
+  width: 70px;
+  height: 70px;
+  background-color: #FFF;
+  border: 1px dashed black;
+  position: absolute;
+  top: 0;
+  left: 100%;
+}
+
+.picker {
+  position: relative;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+#block_picker {
+  background-color: red;
+  height: 200px;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#block_picker .bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+#block_picker .bg1 {
+  z-index: 0;
+  background: -webkit-gradient(linear, left top, right top, from(#fff), to(rgba(255, 255, 255, 0)));
+  background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+#block_picker .bg2 {
+  z-index: 1;
+  background: -webkit-gradient(linear, left top, left bottom, from(transparent), to(#000));
+  background: linear-gradient(to bottom, transparent 0%, #000 100%);
+}
+
+.line {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.color-line-bg {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(linear, left top, right top, from(red), color-stop(17%, #ff0), color-stop(33%, lime), color-stop(50%, cyan), color-stop(66%, blue), color-stop(83%, #f0f), to(red));
+  background: linear-gradient(to right, red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100%);
+  overflow: hidden;
+}
+
+.alpha-line-bg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+  overflow: hidden;
+}
+
+.gradient-line {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.alpha-line-bg__color {
+  height: 100%;
+  width: 100%;
+}
+
+.arrows {
+  z-index: 10000;
+  position: absolute;
+  top: -18%;
+  left: 0;
+  width: 20px;
+  cursor: pointer;
+  background-color: red;
+  height: 135%;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 0px 3px #1F2667, inset 0px 0px 0px 6px white, inset 0px 0px 0px 1px black;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: move;
+}
+
+.arrows.selected {
+  box-shadow: inset 0px 0px 0px 3px #1F2667, inset 0px 0px 0px 6px white, inset 0px 0px 0px 1px black, 0px 0px 2px 2px rgba(41, 41, 41, 0.589);
+}
+
+#circle {
+  width: 8px;
+  height: 8px;
+  border: 1px solid black;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: default;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 3;
+}
+
+.square {
+  position: absolute;
+  top: 30%;
+  left: 70%;
+  height: 30px;
+}
+
+.square input {
+  width: 80px;
+  height: 25px;
+}
+
+.cO {
+  width: 20px;
+  height: 19px;
+  background-color: white;
+  float: right;
+  border-radius: 0 10px 10px 0;
+}
