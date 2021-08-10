@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- {{GET_COLORS}} -->
-    {{ $store.state.H }},{{ $store.state.S }},{{ $store.state.V }}
-    {{getRGB}}
     <div class="container-expand">
       <div
         class="gradient-cover"
@@ -21,7 +18,7 @@
         />
       </div>
       <div class="color-settings-container flex flex-between flex-wrap">
-        <ColorPicker/>
+        <ColorPicker />
         <div class="color-list-wrapper">q</div>
       </div>
     </div>
@@ -29,7 +26,7 @@
 </template>
 
 <script>
-import mixins from '@/mixins/Mixins'
+import mixins from "@/mixins/Mixins";
 import ColorPicker from "./ColorPicker.vue";
 import GradientPicker from "./ColorPicker/GradientPicker/GradientPicker.vue";
 
@@ -47,21 +44,17 @@ export default {
     GradientPicker,
   },
   computed: {
-    ...mapGetters(["GET_COLORS", 'H', 'S', 'V']),
-
-    getRGB() {
-      return this.hsv_rgb(this.H, this.S, this.V)
-    },
+    ...mapGetters(["GET_COLORS", "H", "S", "V"]),
 
     getGradient() {
       let gradient = "";
-      this.GET_COLORS.forEach((color) => {
-        gradient += `rgba(${color.color.join(", ")}) ${color.start}%,`;
-      });
+      [...this.GET_COLORS]
+        .sort((a, b) => a.start - b.start)
+        .forEach((color) => {
+          gradient += `rgba(${color.color.join(", ")}) ${color.start}%,`;
+        });
       return gradient.slice(0, -1);
     },
-  },
-  methods: {
   },
 };
 </script>

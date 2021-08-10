@@ -1,6 +1,6 @@
 export default {
   GET_COLORS(state) {
-    return state.colors.sort((a, b) => a.start - b.start)
+    return state.colors
   },
   GET_SELECTED_COLOR(state) {
     return state.colors[state.selectedColor];

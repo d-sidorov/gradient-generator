@@ -38,7 +38,9 @@ export default {
   },
 
   DELETE_COLOR(state) {
-    if (state.selectedColor) {
+    if (state.colors.length <= 2) return;
+
+    if (state.selectedColor != null) {
       state.colors.splice(state.selectedColor, 1);
     }
   }
