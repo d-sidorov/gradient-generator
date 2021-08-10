@@ -3,13 +3,11 @@
     <Block
       class="color-picker-wrapper picker"
       ref="block"
-      @changeColor="changeBlockCover"
-      :H="H"
     />
     <div class="flex flex-column color-settings__settings">
       <div class="flex flex-column gap30">
-        <ColorLineBlock @changeColor="changeLineColor" :S="S" :V="V" />
-        <AlphaLineBlock @changeAlpha="changeAlpha" :color="getColor" />
+        <ColorLineBlock />
+        <AlphaLineBlock :color="getColor" />
       </div>
     </div>
   </div>
@@ -20,48 +18,37 @@ import Block from "./ColorPicker/Block.vue";
 import ColorLineBlock from "./ColorPicker/ColorLine.vue";
 import AlphaLineBlock from "./ColorPicker/AlphaLine.vue";
 import mixins from "@/mixins/Mixins";
-import {mapMutations} from 'vuex';
+import {mapGetters, mapMutations} from 'vuex';
 
 
 export default {
   mixins: [mixins],
   data() {
     return {
-      H: 0,
-      S: 0,
-      V: 100,
-      A: 1,
     };
   },
-  computed: {
-    getRGBAColor() {
-      return `rgba(${this.hsv_rgb(this.H, this.S, this.V)},${this.A})`;
+  watch: {
+    H() {
+      this.CHANGE_COLOR(this.getColor);
     },
+    S() {
+      this.CHANGE_COLOR(this.getColor);
+    },
+    V() {
+      this.CHANGE_COLOR(this.getColor);
+    },
+    A() {
+      this.CHANGE_COLOR(this.getColor);
+    }
+  },
+  computed: {
+    ...mapGetters(['H', 'S', 'V', 'A']),
     getColor() {
       return [...this.hsv_rgb(this.H, this.S, this.V), this.A];
     },
   },
   methods: {
     ...mapMutations(['CHANGE_COLOR']),
-
-    changeLineColor(color) {
-      [this.H, this.S, this.V] = color;
-      this.$refs.block.$el.style.backgroundColor =
-        "rgb(" + this.hsv_rgb(color[0], 100, 100) + ")";
-      this.changeColor();
-    },
-    changeBlockCover(color) {
-      [this.H, this.S, this.V] = color;
-      this.changeColor();
-    },
-    changeAlpha(alpha) {
-      this.A = alpha;
-      this.changeColor();
-    },
-
-    changeColor() {
-      this.CHANGE_COLOR(this.getColor)
-    },
   },
   components: {
     Block,

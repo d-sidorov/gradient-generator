@@ -1,15 +1,27 @@
 <template>
   <div>
-    {{GET_COLORS}}
+    <!-- {{GET_COLORS}} -->
+    {{ $store.state.H }},{{ $store.state.S }},{{ $store.state.V }}
+    {{getRGB}}
     <div class="container-expand">
-      <div class="gradient-cover" :style="{backgroundImage: `linear-gradient(to right, ${getGradient})`}"></div>
+      <div
+        class="gradient-cover"
+        :style="{
+          backgroundImage: `linear-gradient(to right, ${getGradient})`,
+        }"
+      ></div>
     </div>
     <div class="container palette-container flex br5 flex-middle flex-column">
       <div class="gradient-picker-container flex flex-center flex-middle">
-         <GradientPicker class="gradient-picker br5" :style="{backgroundImage: `linear-gradient(to right, ${getGradient})`}"/>
+        <GradientPicker
+          class="gradient-picker br5"
+          :style="{
+            backgroundImage: `linear-gradient(to right, ${getGradient})`,
+          }"
+        />
       </div>
       <div class="color-settings-container flex flex-between flex-wrap">
-        <ColorPicker @changeColor="changeColor" />
+        <ColorPicker/>
         <div class="color-list-wrapper">q</div>
       </div>
     </div>
@@ -17,36 +29,39 @@
 </template>
 
 <script>
+import mixins from '@/mixins/Mixins'
 import ColorPicker from "./ColorPicker.vue";
-import GradientPicker from './ColorPicker/GradientPicker/GradientPicker.vue';
+import GradientPicker from "./ColorPicker/GradientPicker/GradientPicker.vue";
 
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
+  mixins: [mixins],
   data() {
     return {
       color: null,
     };
   },
   components: {
-    ColorPicker, GradientPicker
+    ColorPicker,
+    GradientPicker,
   },
   computed: {
-    ...mapGetters(['GET_COLORS']),
+    ...mapGetters(["GET_COLORS", 'H', 'S', 'V']),
+
+    getRGB() {
+      return this.hsv_rgb(this.H, this.S, this.V)
+    },
 
     getGradient() {
-      let gradient = '';
-      this.GET_COLORS.forEach(color => {
-        gradient += `rgba(${color.color.join(', ')}) ${color.start}%,`;
+      let gradient = "";
+      this.GET_COLORS.forEach((color) => {
+        gradient += `rgba(${color.color.join(", ")}) ${color.start}%,`;
       });
-      return gradient.slice(0, -1)
-      // return `linear-gradient(72deg, rgb(182, 205, 36) 0%, rgb(137, 144, 99) 27%)`
-    }
+      return gradient.slice(0, -1);
+    },
   },
   methods: {
-    changeColor(color) {
-      this.$store.state.colors[1].color = color;
-    },
   },
 };
 </script>

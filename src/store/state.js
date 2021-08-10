@@ -12,7 +12,8 @@ export default {
     }
   ],
 
-  H: null,
-  S: null,
-  V: null
+  H: 0,
+  S: 0,
+  V: 100,
+  A: 1
 }

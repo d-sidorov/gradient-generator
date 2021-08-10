@@ -4,31 +4,29 @@
     ref="block"
     @click="setPosition"
     @mousedown="addListener"
+    :style="{
+      backgroundColor: `rgb(${this.hsv_rgb($store.state.H, 100, 100)})`,
+    }"
   >
     <div class="bg bg1"></div>
     <div class="bg bg2"></div>
-    <div class="circle" id="circle" ref="circle"></div>
+    <div class="circle" id="circle" ref="circle"
+      :style="{left: `${left}px`, top: `${top}px`, borderColor: V < 50 ? '#fff' : '#000'}"
+    ></div>
   </div>
 </template>
 
 <script>
 import { mouse, Obj } from "@/assets/color-picker/Lib";
 import mixins from "@/mixins/Mixins";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   mixins: [mixins],
-  props: {
-    H: {
-      type: [String, Number],
-      default: 100,
-    },
-  },
   data() {
     return {
-      S: null,
-      V: null,
-
-      color: null,
+      top: null,
+      left: null,
     };
   },
   mounted() {
@@ -49,38 +47,34 @@ export default {
     document.addEventListener("mouseup", this.removeListener);
   },
 
+  computed: {
+    ...mapGetters(['V', 'S']),
+  },
+
+  watch: {
+    V(val) {
+      this.top = val * -this.pxY + this.blockHeight;
+    },
+    S(val) {
+      this.left = val * this.pxX;
+    }
+  },
+
   methods: {
+    ...mapMutations(["SET_V", "SET_S"]),
+
     cPos(e) {
-      let top, left;
-      document.addEventListener("dragstart", () => {
-        return false;
-      });
-      document.body.addEventListener("selectstart", () => {
-        return false;
-      });
+      let left, top;
 
       left = mouse.pageX(e) - this.blockPositionX - this.circleWith / 2;
       left = left < 0 ? 0 : left;
       left = left > this.blockWidth ? this.blockWidth : left;
-
-      this.circle.style.left = left + "px";
-
-      this.S = Math.ceil(left / this.pxX);
+      this.SET_S(Math.ceil(left / this.pxX));
 
       top = mouse.pageY(e) - this.blockPositionY - this.cirlcleHeight / 2;
       top = top > this.blockHeight ? this.blockHeight : top;
-
       top = top < 0 ? 0 : top;
-
-      this.circle.style.top = top + "px";
-
-      this.V = Math.ceil(Math.abs(top / this.pxY - 100));
-
-      if (this.V < 50) this.circle.style.borderColor = "#fff";
-      else this.circle.style.borderColor = "#000";
-      this.color = this.hsv_rgb(this.H, this.S, this.V);
-      
-      this.$emit('changeColor', [this.H, this.S, this.V])
+      this.SET_V(Math.ceil(Math.abs(top / this.pxY - 100)));
     },
     addListener() {
       document.addEventListener("mousemove", this.setPosition);

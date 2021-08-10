@@ -8,6 +8,7 @@
       ref="arrows"
       @mousedown="arrowsMouseDown"
       @click="arrowsClick"
+      :style="{left: `${left}px`, backgroundColor: `rgb(${getColor})`}"
     ></div>
   </div>
 </template>
@@ -15,6 +16,7 @@
 <script>
 import { mouse, Obj } from "@/assets/color-picker/Lib";
 import mixins from "@/mixins/Mixins";
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   mixins: [mixins],
@@ -25,14 +27,9 @@ export default {
   },
   data() {
     return {
-      H: null,
-
-      canvas: null,
-      ctx: null,
-
-      height: 20,
-      position: null,
       pst: null,
+      width: null,
+      left: null,
     };
   },
   mounted() {
@@ -46,23 +43,27 @@ export default {
       document.removeEventListener("mousemove", this.mouseMove);
     });
   },
+  watch: {
+    A(val) {
+      this.left = Math.ceil((this.width / 100) * ((1 - val) * 100) - 15);
+    }
+  },
   computed: {
+    ...mapGetters(['A', 'GET_SELECTED_COLOR']),
     getColor() {
-      return [this.color[0], this.color[1], this.color[2]]
+      return this.GET_SELECTED_COLOR.color.slice(0,3).join(',');
     }
   },
   methods: {
+    ...mapMutations(['SET_A']),
     posit(e) {
       let left;
-
       left = mouse.pageX(e) - this.pst;
       left = left < 0 ? 0 : left;
       left = left > this.width - 5 ? this.width - 5 : left;
 
-      this.$refs.arrows.style.left = left - 2 + "px";
       let alpha = (100 - (100 / (this.width - 5)) * left) / 100;
-
-      this.$emit("changeAlpha", alpha);
+      this.SET_A(alpha);
     },
 
     arrowsMouseDown() {
